@@ -83,8 +83,10 @@ function Remove-WinfilesStalePowerShellModuleVersion {
                     -Recurse -Force -ErrorAction Stop
             }
             catch {
-                Write-Verbose "Quarantined module directory is still locked: " +
-                    "$($oldQuarantine.FullName)"
+                Write-Verbose (
+                    'Quarantined module directory is still locked: ' +
+                    $oldQuarantine.FullName
+                )
             }
         }
     }
@@ -128,8 +130,10 @@ function Remove-WinfilesStalePowerShellModuleVersion {
                 "locked directory aside also failed: $($_.Exception.Message)"
         }
 
-        Write-Warning "Moved locked incomplete module files to '$quarantinePath'. " +
+        Write-Warning (
+            "Moved locked incomplete module files to '$quarantinePath'. " +
             'A later setup run will remove them after the locking process exits.'
+        )
         return
     }
 
@@ -154,6 +158,9 @@ function Install-WinfilesPowerShellModule {
     }
 
     foreach ($module in $modules) {
+        Remove-WinfilesStalePowerShellModuleVersion -Name $module.Name `
+            -Version $module.Version
+
         $requiredVersion = [version]$module.Version
         $installed = Get-Module -ListAvailable -Name $module.Name |
             Where-Object Version -EQ $requiredVersion |
@@ -162,9 +169,6 @@ function Install-WinfilesPowerShellModule {
             Write-WinfilesLog "$($module.Name) $requiredVersion is already installed."
             continue
         }
-
-        Remove-WinfilesStalePowerShellModuleVersion -Name $module.Name `
-            -Version $module.Version
 
         if (-not $PSCmdlet.ShouldProcess(
                 "$($module.Name) $requiredVersion",

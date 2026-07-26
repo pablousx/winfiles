@@ -65,6 +65,18 @@ try {
     Assert-WinfilesCondition -Condition (-not (Test-Path -LiteralPath $versionPath)) `
         -Message 'Incomplete PowerShell module directory was not repaired.'
 
+    $quarantinePath = Join-Path -Path $moduleRoot `
+        -ChildPath '.winfiles-stale\IncompleteTestModule-1.2.3-old'
+    New-Item -ItemType Directory -Path $quarantinePath -Force | Out-Null
+    'stale package content' |
+        Set-Content -LiteralPath (
+            Join-Path -Path $quarantinePath -ChildPath 'IncompleteTestModule.dll'
+        ) -Encoding utf8NoBOM
+    Remove-WinfilesStalePowerShellModuleVersion `
+        -Name 'IncompleteTestModule' -Version '1.2.3' -ModuleRoot $moduleRoot
+    Assert-WinfilesCondition -Condition (-not (Test-Path -LiteralPath $quarantinePath)) `
+        -Message 'Old PowerShell module quarantine was not cleaned.'
+
     $settingsPath = Join-Path -Path $temporaryRoot -ChildPath 'settings.psd1'
     @'
 @{

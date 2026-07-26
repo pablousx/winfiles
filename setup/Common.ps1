@@ -46,6 +46,10 @@ function Invoke-WinfilesNativeCommand {
         [object[]]$ArgumentList = @()
     )
 
+    # A fresh strict-mode session may not have created this automatic variable
+    # yet. Initialize it so launchers that do not set an exit code cannot make
+    # the check itself fail.
+    $LASTEXITCODE = 0
     & $FilePath @ArgumentList
     if ($LASTEXITCODE -ne 0) {
         throw "'$FilePath' exited with code $LASTEXITCODE."
