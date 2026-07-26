@@ -5,6 +5,14 @@ safety model of the companion `dotfiles` repository while using native Windows
 tools: Oh My Posh, PSReadLine, WinGet, FNM, PowerShell modules, and generated
 native completions.
 
+## Companion repository
+
+> [!TIP]
+> **Using macOS, Linux, or WSL?**
+>
+> See [`dotfiles`](https://github.com/pablousx/dotfiles) for the Zsh-based
+> counterpart to this Windows configuration.
+
 ## Scope
 
 - PowerShell 7 is the managed interactive shell.

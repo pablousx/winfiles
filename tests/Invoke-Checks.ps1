@@ -103,7 +103,8 @@ try {
         Write-Warning 'skip - Pester is not installed'
     }
 
-    $gitCommand = Get-Command -Name git -CommandType Application -ErrorAction SilentlyContinue
+    $gitCommand = Get-Command -Name git -CommandType Application -ErrorAction SilentlyContinue |
+        Select-Object -First 1
     if ($gitCommand) {
         & $gitCommand.Source -C $repositoryRoot diff --check
         if ($LASTEXITCODE -ne 0) {
