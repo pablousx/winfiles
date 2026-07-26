@@ -5,8 +5,6 @@ safety model of the companion `dotfiles` repository while using native Windows
 tools: Oh My Posh, PSReadLine, WinGet, FNM, PowerShell modules, and generated
 native completions.
 
-## Companion repository
-
 > [!TIP]
 > **Using macOS, Linux, or WSL?**
 >
