@@ -1,0 +1,23 @@
+name: check
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  powershell:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Install pinned validation modules
+        shell: pwsh
+        run: |
+          Install-PSResource -Name Pester -Version 6.0.1 -Scope CurrentUser -TrustRepository
+          Install-PSResource -Name PSScriptAnalyzer -Version 1.25.0 -Scope CurrentUser -TrustRepository
+      - name: Run checks
+        shell: pwsh
+        run: ./tests/Invoke-Checks.ps1 -RequireTools
