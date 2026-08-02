@@ -15,7 +15,7 @@ if ($Host.Name -eq 'ConsoleHost' -and
         if ($WinfilesSettings.DisablePredictions) {
             $psReadLineOptions.PredictionSource = 'None'
         }
-        else {
+        elseif ($Host.UI.SupportsVirtualTerminal -and -not [Console]::IsOutputRedirected) {
             $psReadLineOptions.PredictionSource = 'History'
             $psReadLineOptions.PredictionViewStyle = 'ListView'
         }
